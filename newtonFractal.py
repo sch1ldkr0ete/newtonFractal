@@ -13,8 +13,8 @@ roots = np.array([1., complex(-.5, 3. ** .5 * .5),
                   complex(-.5, -3. ** .5 * .5)])
 
 # size of image in pixels
-SIZE_X = 900  # x size
-SIZE_Y = 900  # y size
+SIZE_X = 1000  # x size
+SIZE_Y = 1000  # y size
 # coordinate size
 X_A = -1.
 X_B = 1.
@@ -28,7 +28,7 @@ EPS = 1.e-5
 H = 1.e-5
 
 # array for the pixel values
-pixels = np.zeros(shape=(SIZE_X, SIZE_Y, 3), dtype=np.int)
+pixels = np.zeros(shape=(SIZE_X, SIZE_Y, 3), dtype=np.uint8)
 
 # iterate over the pixels and use them as starting point for the newton
 # iteration
@@ -43,16 +43,17 @@ for img_x in range(SIZE_X):
                        / complex(H, H))
             z_0 = z - f(roots, z) / f_prime
             if abs(z_0 - roots[0]) < EPS:
-                pixels[img_x, img_y] = [255, 0, 0]
+                pixels[img_x, img_y] = [255 - i * 10, 0, 0]
                 break
             elif abs(z_0 - roots[1]) < EPS:
-                pixels[img_x, img_y] = [0, 255, 0]
+                pixels[img_x, img_y] = [0, 255 - i * 10, 0]
                 break
             elif abs(z_0 - roots[2]) < EPS:
-                pixels[img_x, img_y] = [0, 0, 255]
+                pixels[img_x, img_y] = [0, 0, 255 - i * 10]
                 break
             z = z_0
 
 # build image
-img = smp.toimage(pixels)
-img.show()
+smp.imsave('newtonFractal.png', pixels)
+#img = smp.toimage(pixels)
+#img.show()
